@@ -1,36 +1,73 @@
 import processing.core.PApplet;
+import processing.core.PImage;
 
 public class Sketch extends PApplet {
 	
-	
-  /**
-   * Called once at the beginning of execution, put your size all in this method
-   */
+  // Declare variables
+  public PImage carrot;
+  public PImage watermelon;
+  public PImage pumpkin;
+
+  float x = 0;
+  float y = 0;
+  float xSpeed = 5;
+  float ySpeed = 4;
+  float speed = 5;
+  double xPumpkin = 1;
+  double yPumpkin = 50;
+  
+  // Set size
   public void settings() {
-	// put your size call here
-    size(400, 400);
+
+    size(500, 500);
+
   }
 
-  /** 
-   * Called once at the beginning of execution.  Add initial set up
-   * values here i.e background, stroke, fill etc.
-   */
   public void setup() {
-    background(210, 255, 173);
+    
+   // load images
+   carrot = loadImage("../carrot.jpg");
+   watermelon = loadImage("../watermelon.png");
+   pumpkin = loadImage("../pumpkin.png");
+
+   // resize images
+   watermelon.resize(100,100);
+   pumpkin.resize(100,100);
+
   }
 
-  /**
-   * Called repeatedly, anything drawn to the screen goes here
-   */
   public void draw() {
-	  
-	// sample code, delete this stuff
-    stroke(128);
-    line(150, 25, 270, 350);  
 
-    stroke(255);
-    line(50, 125, 70, 50);  
+    // draw images
+    image(carrot, 0, 0);
+    image(watermelon, x, y);
+
+    // speed of watermelon
+    x += xSpeed;
+    y += ySpeed;
+
+    // collisison detection for watermelon
+    if (x < 0 || (x + 100) > width) {
+      xSpeed *= -1;
+    }
+
+    if (y < 0  || (y + 100) > height) {
+      ySpeed *= -1;
+    }
+
+    // non-linear path for pumpkin
+    xPumpkin += speed;
+    yPumpkin = (0.0013 * (Math.pow(xPumpkin - width/2, 2))) + 100;
+
+    if ((xPumpkin + 100) > width) {
+
+      xPumpkin = 0;
+
+    }
+
+    // draw pumpkin
+    image(pumpkin, (float)(xPumpkin), (float)(yPumpkin));
+
   }
   
-  // define other methods down here.
 }
